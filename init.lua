@@ -485,6 +485,7 @@ require('which-key').register {
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
   ['<leader>b'] = { name = '[B]uffers', _ = 'which_key_ignore' },
+  ["<leader>q"] = { name = "+quit/session" },
 }
 
 -- mason-lspconfig requires that these setup functions are called in this order
