@@ -20,12 +20,7 @@ return {
 				-- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
 				use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
 				-- instead of relying on nvim autocmd events.
-			}
+			},
 		})
 	end,
-
-	vim.keymap.set('n', '<leader>t', ':Neotree toggle<CR>', {
-		noremap = true,
-		desc = 'Toggle file tree'
-	})
 }
