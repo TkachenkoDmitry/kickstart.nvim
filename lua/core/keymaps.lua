@@ -10,3 +10,7 @@ vim.keymap.set("n", "<leader>;h", ":lua require('harpoon.ui').nav_file(1)<CR>", 
 vim.keymap.set("n", "<leader>;j", ":lua require('harpoon.ui').nav_file(2)<CR>", { desc = 'Nav 2', silent = true })
 vim.keymap.set("n", "<leader>;k", ":lua require('harpoon.ui').nav_file(3)<CR>", { desc = 'Nav 3', silent = true })
 vim.keymap.set("n", "<leader>;l", ":lua require('harpoon.ui').nav_file(4)<CR>", { desc = 'Nav 4', silent = true })
+vim.keymap.set("", "<C-d>", "<C-d> zz", { noremap = true })
+vim.keymap.set("", "<C-u>", "<C-u> zz", { noremap = true })
+vim.keymap.set("x", "<leader>p", [["_dp]], { noremap = true })
+vim.keymap.set("x", "<leader>P", [["_dP]], { noremap = true })
