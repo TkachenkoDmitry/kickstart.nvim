@@ -14,3 +14,13 @@ vim.keymap.set("", "<C-d>", "<C-d> zz", { noremap = true })
 vim.keymap.set("", "<C-u>", "<C-u> zz", { noremap = true })
 vim.keymap.set("x", "<leader>p", [["_dp]], { noremap = true })
 vim.keymap.set("x", "<leader>P", [["_dP]], { noremap = true })
+
+-- trouble
+vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end, { desc = "Toggle triouble" })
+vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end,
+	{ desc = '[W]orkspace Diagnostics' })
+vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end,
+	{ desc = '[D]ocument Diagnostics' })
+vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end, { desc = '[Q]uickfix' })
+vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist") end, { desc = '[L]oclist' })
+vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end, { desc = 'Lsp [R]eferences' })
