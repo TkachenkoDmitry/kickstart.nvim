@@ -20,6 +20,7 @@ return {
 					table.insert(opts.ensure_installed, "js-debug-adapter")
 				end,
 			},
+			"rcarriga/nvim-dap-ui",
 		},
 		opts = function()
 			local dap = require("dap")
@@ -59,6 +60,8 @@ return {
 					}
 				end
 			end
+
+			require('dap.ext.vscode').load_launchjs()
 		end,
 	},
 }
