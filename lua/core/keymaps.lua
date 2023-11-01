@@ -24,3 +24,4 @@ vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document
 vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end, { desc = '[Q]uickfix' })
 vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist") end, { desc = '[L]oclist' })
 vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end, { desc = 'Lsp [R]eferences' })
+vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
