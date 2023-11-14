@@ -71,4 +71,9 @@ return {
       end,
     })
   end,
+  opts = {
+    inlay_hints = {
+      enabled = true,
+    },
+  }
 }

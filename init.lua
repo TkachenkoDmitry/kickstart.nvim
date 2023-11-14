@@ -423,9 +423,14 @@ vim.defer_fn(function()
     },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
-    highlight = { enable = true },
+    highlight = {
+      enable = true,
+      disable = function(lang, bufnr) -- Disable in large json buffers
+        return lang == "json" and vim.api.nvim_buf_line_count(bufnr) > 5000
+      end
+    },
     indent = { enable = true },
     incremental_selection = {
       enable = true,
@@ -439,6 +444,9 @@ vim.defer_fn(function()
     textobjects = {
       select = {
         enable = true,
+        disable = function(lang, bufnr) -- Disable in large json buffers
+          return lang == "json" and vim.api.nvim_buf_line_count(bufnr) > 5000
+        end,
         lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
@@ -568,6 +576,15 @@ local servers = {
   tsserver = {
     settings = {
       typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "literal",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = false,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
         format = {
           indentSize = vim.o.shiftwidth,
           convertTabsToSpaces = vim.o.expandtab,
@@ -575,6 +592,15 @@ local servers = {
         },
       },
       javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
         format = {
           indentSize = vim.o.shiftwidth,
           convertTabsToSpaces = vim.o.expandtab,
