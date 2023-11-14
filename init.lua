@@ -416,7 +416,7 @@ local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
     require('telescope.builtin').live_grep({
-      search_dirs = {git_root},
+      search_dirs = { git_root },
     })
   end
 end
@@ -707,12 +707,12 @@ mason_lspconfig.setup_handlers({
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
-local cmp = require("cmp")
-local luasnip = require("luasnip")
-require("luasnip.loaders.from_vscode").lazy_load()
-luasnip.config.setup({})
+local cmp = require 'cmp'
+local luasnip = require 'luasnip'
+require('luasnip.loaders.from_vscode').lazy_load()
+luasnip.config.setup {}
 
-cmp.setup({
+cmp.setup {
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -730,8 +730,8 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
-    }),
-    ["<Tab>"] = cmp.mapping(function(fallback)
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_locally_jumpable() then
@@ -739,8 +739,8 @@ cmp.setup({
       else
         fallback()
       end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.locally_jumpable(-1) then
@@ -748,16 +748,16 @@ cmp.setup({
       else
         fallback()
       end
-    end, { "i", "s" }),
-  }),
+    end, { 'i', 's' }),
+  },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
     { name = "buffer" },
     { name = "path" }
-  },
-})
 
+  },
+}
 require("core.keymaps")
 
 -- The line beneath this is called `modeline`. See `:help modeline`
