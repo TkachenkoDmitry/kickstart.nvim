@@ -613,6 +613,7 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   tsserver = {
+    single_file_support = false,
     settings = {
       typescript = {
         inlayHints = {
@@ -623,11 +624,6 @@ local servers = {
           includeInlayPropertyDeclarationTypeHints = true,
           includeInlayFunctionLikeReturnTypeHints = true,
           includeInlayEnumMemberValueHints = true,
-        },
-        format = {
-          indentSize = vim.o.shiftwidth,
-          convertTabsToSpaces = vim.o.expandtab,
-          tabSize = vim.o.tabstop,
         },
       },
       javascript = {
@@ -640,14 +636,9 @@ local servers = {
           includeInlayFunctionLikeReturnTypeHints = true,
           includeInlayEnumMemberValueHints = true,
         },
-        format = {
-          indentSize = vim.o.shiftwidth,
-          convertTabsToSpaces = vim.o.expandtab,
-          tabSize = vim.o.tabstop,
-        },
-      },
-      completions = {
-        completeFunctionCalls = true,
+        completions = {
+          completeFunctionCalls = true,
+        }
       },
     },
   },
@@ -699,6 +690,7 @@ mason_lspconfig.setup_handlers({
     require("lspconfig")[server_name].setup({
       capabilities = capabilities,
       on_attach = on_attach,
+      inlay_hints = { enabled = true },
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     })
@@ -755,8 +747,8 @@ cmp.setup {
     { name = 'luasnip' },
     { name = "buffer" },
     { name = "path" }
-
   },
+  config = function() require('config.snippets') end
 }
 require("core.keymaps")
 
