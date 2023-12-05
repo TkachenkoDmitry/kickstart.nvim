@@ -81,6 +81,9 @@ require("lazy").setup({
   {
     -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
+    opts = {
+      inlay_hints = { enabled = true },
+    },
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
       "williamboman/mason.nvim",
@@ -94,7 +97,6 @@ require("lazy").setup({
       "folke/neodev.nvim",
     },
   },
-
   {
     -- Autocompletion
     "hrsh7th/nvim-cmp",
@@ -360,6 +362,17 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
+if vim.lsp.inlay_hint then
+  vim.keymap.set("n", "<leader>uh",
+    function()
+      if vim.lsp.inlay_hint.is_enabled() then
+        vim.lsp.inlay_hint.enable(0, false)
+      else
+        vim.lsp.inlay_hint
+            .enable(0, true)
+      end
+    end, { desc = "Toggle Inlay Hints" })
+end
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
@@ -465,6 +478,8 @@ vim.defer_fn(function()
       "json5",
       "jsonc",
       "yaml",
+      "terraform",
+      "hcl"
     },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -613,32 +628,27 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   tsserver = {
-    single_file_support = false,
-    settings = {
-      typescript = {
-        inlayHints = {
-          includeInlayParameterNameHints = "literal",
-          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = false,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
+    terraformls = {},
+    typescript = {
+      inlayHints = {
+        includeInlayEnumMemberValueHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayVariableTypeHints = true,
       },
-      javascript = {
-        inlayHints = {
-          includeInlayParameterNameHints = "all",
-          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-        completions = {
-          completeFunctionCalls = true,
-        }
+    },
+    javascript = {
+      inlayHints = {
+        includeInlayEnumMemberValueHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayVariableTypeHints = true,
       },
     },
   },
@@ -669,6 +679,7 @@ local servers = {
       telemetry = { enable = false },
       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
       -- diagnostics = { disable = { 'missing-fields' } },
+      hint = { enabled = true }
     },
   },
 }
@@ -692,7 +703,6 @@ mason_lspconfig.setup_handlers({
     require("lspconfig")[server_name].setup({
       capabilities = capabilities,
       on_attach = on_attach,
-      inlay_hints = { enabled = true },
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     })
