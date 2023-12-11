@@ -17,6 +17,7 @@ return {
 			require("conform").setup {
 				formatters_by_ft = {
 					lua = { "stylua" },
+					go = { "goimports", "gofumpt" },
 					javascript = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					javascriptreact = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					typescript = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
