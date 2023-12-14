@@ -1,6 +1,4 @@
 return {
 	'ThePrimeagen/harpoon',
-	config = function()
-		require("harpoon").setup()
-	end
+	branch = "harpoon2",
 }
