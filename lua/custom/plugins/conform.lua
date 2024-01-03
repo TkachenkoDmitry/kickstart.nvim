@@ -22,6 +22,7 @@ return {
 					javascriptreact = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					typescript = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					typescriptreact = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
+					astro = { { "prettierd", "prettier" } }
 				},
 			}
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"

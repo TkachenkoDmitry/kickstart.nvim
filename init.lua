@@ -704,6 +704,7 @@ local servers = {
   },
   -- pyright = {},
   terraformls = {},
+  astro = {},
   -- rust_analyzer = {},
   tsserver = {
     typescript = {
