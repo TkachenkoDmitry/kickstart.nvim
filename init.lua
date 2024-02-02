@@ -43,7 +43,7 @@ P.S. You can delete this when you're done too. It's your config now :)
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.g.copilot_assume_mapped = true
+-- vim.g.copilot_assume_mapped = true
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
@@ -70,17 +70,29 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {
     'zbirenbaum/copilot.lua',
-    config = function()
-      require("copilot").setup({
-        suggestion = { auto_trigger = true },
-        -- panel = { enabled = false },
-        filetypes = {
-          yaml = true,
+    event = "InsertEnter",
+    opts = {
+      suggestion = { enabled = true, auto_trigger = true, keymap = { accept = "<C-j>" } },
+      panel = {
+        enabled = true,
+        auto_refresh = false,
+        keymap = {
+          jump_prev = "[[",
+          jump_next = "]]",
+          accept = "<C-CR>",
+          refresh = "gr",
+          open = "<M-CR>",
         },
-        copilot_node_command = 'node', -- Node.js version must be > 18.x
-        server_opts_overrides = {},
-      })
-    end,
+        layout = {
+          position = "bottom", -- | top | left | right
+          ratio = 0.4,
+        },
+      },
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+    },
   },
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -273,7 +285,6 @@ require("lazy").setup({
           "fileformat",
           "filetype",
           { require("lazy.status").updates, cond = require("lazy.status").has_updates },
-          "diff",
         },
         lualine_y = { "progress" },
         lualine_z = { "location" },
@@ -546,6 +557,7 @@ vim.defer_fn(function()
       end
     },
     indent = { enable = true },
+    endwise = { enable = true },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -854,30 +866,30 @@ cmp.setup {
     end, { 'i', 's' }),
   },
   sources = {
-    { name = "copilot",  group_index = 2 },
+    -- { name = "copilot",  group_index = 2 },
     { name = 'nvim_lsp', group_index = 2 },
     { name = 'luasnip',  group_index = 2 },
     { name = "buffer",   group_index = 2 },
     { name = "path",     group_index = 2 }
   },
-  sorting = {
-    priority_weight = 2,
-    comparators = {
-      require("copilot_cmp.comparators").prioritize,
-
-      -- Below is the default comparitor list and order for nvim-cmp
-      cmp.config.compare.offset,
-      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-      cmp.config.compare.exact,
-      cmp.config.compare.score,
-      cmp.config.compare.recently_used,
-      cmp.config.compare.locality,
-      cmp.config.compare.kind,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.length,
-      cmp.config.compare.order,
-    },
-  },
+  -- sorting = {
+  --   priority_weight = 2,
+  --   comparators = {
+  --     require("copilot_cmp.comparators").prioritize,
+  --
+  --     -- Below is the default comparitor list and order for nvim-cmp
+  --     cmp.config.compare.offset,
+  --     -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+  --     cmp.config.compare.exact,
+  --     cmp.config.compare.score,
+  --     cmp.config.compare.recently_used,
+  --     cmp.config.compare.locality,
+  --     cmp.config.compare.kind,
+  --     cmp.config.compare.sort_text,
+  --     cmp.config.compare.length,
+  --     cmp.config.compare.order,
+  --   },
+  -- },
   config = function() require('config.snippets') end
 }
 require("core.keymaps")
