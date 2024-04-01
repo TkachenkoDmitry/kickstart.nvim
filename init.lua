@@ -733,6 +733,7 @@ local servers = {
   terraformls = {},
   astro = {},
   -- rust_analyzer = {},
+  typos_lsp = {},
   tsserver = {
     typescript = {
       inlayHints = {

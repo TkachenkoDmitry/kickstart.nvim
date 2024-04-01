@@ -17,13 +17,13 @@ vim.keymap.set("n", "<leader>;j", function() harpoon:list():select(2) end, { des
 vim.keymap.set("n", "<leader>;k", function() harpoon:list():select(3) end, { desc = 'Nav 3', silent = true })
 vim.keymap.set("n", "<leader>;l", function() harpoon:list():select(4) end, { desc = 'Nav 4', silent = true })
 
-vim.keymap.set("", "<C-d>", "<C-d> zz", { noremap = true })
-vim.keymap.set("", "<C-u>", "<C-u> zz", { noremap = true })
-vim.keymap.set("x", "<leader>p", [["_dp]], { noremap = true })
-vim.keymap.set("x", "<leader>P", [["_dP]], { noremap = true })
+-- vim.keymap.set("", "<C-d>", "<C-d> zz", { noremap = true })
+-- vim.keymap.set("", "<C-u>", "<C-u> zz", { noremap = true })
+-- vim.keymap.set("x", "<leader>p", [["_dp]], { noremap = true })
+-- vim.keymap.set("x", "<leader>P", [["_dP]], { noremap = true })
 
 -- trouble
-vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end, { desc = "Toggle triouble" })
+vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end, { desc = "Toggle trouble" })
 vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end,
 	{ desc = '[W]orkspace Diagnostics' })
 vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end,
