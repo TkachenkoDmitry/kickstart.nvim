@@ -422,12 +422,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 if vim.lsp.inlay_hint then
   vim.keymap.set("n", "<leader>uh",
     function()
-      if vim.lsp.inlay_hint.is_enabled() then
-        vim.lsp.inlay_hint.enable(false)
-      else
-        vim.lsp.inlay_hint
-            .enable(true)
-      end
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, { desc = "Toggle Inlay Hints" })
 end
 -- [[ Highlight on yank ]]
