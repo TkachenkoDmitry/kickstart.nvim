@@ -17,12 +17,17 @@ return {
 			require("conform").setup {
 				formatters_by_ft = {
 					lua = { "stylua" },
-					go = { "goimports", "gofumpt" },
+					go = { "goimports", "gofumpt", "golines" },
 					javascript = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					javascriptreact = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					typescript = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					typescriptreact = { { "eslint_d", "eslint" }, { "prettierd", "prettier" } },
 					astro = { { "prettierd", "prettier" } }
+				},
+				format_on_save = {
+					-- I recommend these options. See :help conform.format for details.
+					lsp_fallback = true,
+					timeout_ms = 500,
 				},
 			}
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
