@@ -69,7 +69,7 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require("lazy").setup({
   {
-    'zbirenbaum/copilot.lua',
+    "zbirenbaum/copilot.lua",
     event = "InsertEnter",
     opts = {
       suggestion = { enabled = true, auto_trigger = true, keymap = { accept = "<C-j>" } },
@@ -118,7 +118,7 @@ require("lazy").setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { "j-hui/fidget.nvim", opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       "folke/neodev.nvim",
@@ -144,7 +144,7 @@ require("lazy").setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { "folke/which-key.nvim",  opts = {} },
+  { "folke/which-key.nvim", opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     "lewis6991/gitsigns.nvim",
@@ -167,55 +167,55 @@ require("lazy").setup({
         end
 
         -- Navigation
-        map({ 'n', 'v' }, ']c', function()
+        map({ "n", "v" }, "]c", function()
           if vim.wo.diff then
             return "]c"
           end
           vim.schedule(function()
             gs.next_hunk()
           end)
-          return '<Ignore>'
-        end, { expr = true, desc = 'Jump to next hunk' })
+          return "<Ignore>"
+        end, { expr = true, desc = "Jump to next hunk" })
 
-        map({ 'n', 'v' }, '[c', function()
+        map({ "n", "v" }, "[c", function()
           if vim.wo.diff then
             return "[c"
           end
           vim.schedule(function()
             gs.prev_hunk()
           end)
-          return '<Ignore>'
-        end, { expr = true, desc = 'Jump to previous hunk' })
+          return "<Ignore>"
+        end, { expr = true, desc = "Jump to previous hunk" })
 
         -- Actions
         -- visual mode
-        map('v', '<leader>hs', function()
-          gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'stage git hunk' })
-        map('v', '<leader>hr', function()
-          gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'reset git hunk' })
+        map("v", "<leader>hs", function()
+          gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+        end, { desc = "stage git hunk" })
+        map("v", "<leader>hr", function()
+          gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+        end, { desc = "reset git hunk" })
         -- normal mode
-        map('n', '<leader>hs', gs.stage_hunk, { desc = 'git stage hunk' })
-        map('n', '<leader>hr', gs.reset_hunk, { desc = 'git reset hunk' })
-        map('n', '<leader>hS', gs.stage_buffer, { desc = 'git Stage buffer' })
-        map('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
-        map('n', '<leader>hR', gs.reset_buffer, { desc = 'git Reset buffer' })
-        map('n', '<leader>hp', gs.preview_hunk, { desc = 'preview git hunk' })
-        map('n', '<leader>hb', function()
-          gs.blame_line { full = false }
-        end, { desc = 'git blame line' })
-        map('n', '<leader>hd', gs.diffthis, { desc = 'git diff against index' })
-        map('n', '<leader>hD', function()
-          gs.diffthis '~'
-        end, { desc = 'git diff against last commit' })
+        map("n", "<leader>hs", gs.stage_hunk, { desc = "git stage hunk" })
+        map("n", "<leader>hr", gs.reset_hunk, { desc = "git reset hunk" })
+        map("n", "<leader>hS", gs.stage_buffer, { desc = "git Stage buffer" })
+        map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "undo stage hunk" })
+        map("n", "<leader>hR", gs.reset_buffer, { desc = "git Reset buffer" })
+        map("n", "<leader>hp", gs.preview_hunk, { desc = "preview git hunk" })
+        map("n", "<leader>hb", function()
+          gs.blame_line({ full = false })
+        end, { desc = "git blame line" })
+        map("n", "<leader>hd", gs.diffthis, { desc = "git diff against index" })
+        map("n", "<leader>hD", function()
+          gs.diffthis("~")
+        end, { desc = "git diff against last commit" })
 
         -- Toggles
-        map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = 'toggle git blame line' })
-        map('n', '<leader>td', gs.toggle_deleted, { desc = 'toggle git show deleted' })
+        map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "toggle git blame line" })
+        map("n", "<leader>td", gs.toggle_deleted, { desc = "toggle git show deleted" })
 
         -- Text object
-        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'select git hunk' })
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "select git hunk" })
       end,
     },
   },
@@ -414,16 +414,15 @@ vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 if vim.lsp.inlay_hint then
-  vim.keymap.set("n", "<leader>uh",
-    function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    end, { desc = "Toggle Inlay Hints" })
+  vim.keymap.set("n", "<leader>uh", function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+  end, { desc = "Toggle Inlay Hints" })
 end
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -460,17 +459,17 @@ local function find_git_root()
   local current_dir
   local cwd = vim.fn.getcwd()
   -- If the buffer is not associated with a file, return nil
-  if current_file == '' then
+  if current_file == "" then
     current_dir = cwd
   else
     -- Extract the directory from the current file's path
-    current_dir = vim.fn.fnamemodify(current_file, ':h')
+    current_dir = vim.fn.fnamemodify(current_file, ":h")
   end
 
   -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
+  local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
   if vim.v.shell_error ~= 0 then
-    print 'Not a git repository. Searching on current working directory'
+    print("Not a git repository. Searching on current working directory")
     return cwd
   end
   return git_root
@@ -480,13 +479,13 @@ end
 local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
-    require('telescope.builtin').live_grep {
+    require("telescope.builtin").live_grep({
       search_dirs = { git_root },
-    }
+    })
   end
 end
 
-vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
+vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
@@ -500,21 +499,21 @@ vim.keymap.set("n", "<leader>/", function()
 end, { desc = "[/] Fuzzily search in current buffer" })
 
 local function telescope_live_grep_open_files()
-  require('telescope.builtin').live_grep {
+  require("telescope.builtin").live_grep({
     grep_open_files = true,
-    prompt_title = 'Live Grep in Open Files',
-  }
+    prompt_title = "Live Grep in Open Files",
+  })
 end
-vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
-vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+vim.keymap.set("n", "<leader>s/", telescope_live_grep_open_files, { desc = "[S]earch [/] in Open Files" })
+vim.keymap.set("n", "<leader>ss", require("telescope.builtin").builtin, { desc = "[S]earch [S]elect Telescope" })
+vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
+vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -539,7 +538,7 @@ vim.defer_fn(function()
       "jsonc",
       "yaml",
       "terraform",
-      "hcl"
+      "hcl",
     },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -549,7 +548,7 @@ vim.defer_fn(function()
       enable = true,
       disable = function(lang, bufnr) -- Disable in large json buffers
         return lang == "json" and vim.api.nvim_buf_line_count(bufnr) > 5000
-      end
+      end,
     },
     indent = { enable = true },
     endwise = { enable = true },
@@ -658,22 +657,22 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register {
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
+require("which-key").register({
+  ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
+  ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
+  ["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
+  ["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
+  ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
+  ["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+  ["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
+  ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+})
 -- register which-key VISUAL mode
 -- required for visual <leader>hs (hunk stage) to work
-require('which-key').register({
-  ['<leader>'] = { name = 'VISUAL <leader>' },
-  ['<leader>h'] = { 'Git [H]unk' },
-}, { mode = 'v' })
+require("which-key").register({
+  ["<leader>"] = { name = "VISUAL <leader>" },
+  ["<leader>h"] = { "Git [H]unk" },
+}, { mode = "v" })
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -691,38 +690,40 @@ require("mason-lspconfig").setup()
 local servers = {
   -- clangd = {},
   gopls = {
-    gofumpt = true,
-    codelenses = {
-      gc_details = false,
-      generate = true,
-      regenerate_cgo = true,
-      run_govulncheck = true,
-      test = true,
-      tidy = true,
-      upgrade_dependency = true,
-      vendor = true,
+    gopls = {
+      gofumpt = true,
+      codelenses = {
+        gc_details = false,
+        generate = true,
+        regenerate_cgo = true,
+        run_govulncheck = true,
+        test = true,
+        tidy = true,
+        upgrade_dependency = true,
+        vendor = true,
+      },
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+      analyses = {
+        fieldalignment = true,
+        nilness = true,
+        unusedparams = true,
+        unusedwrite = true,
+        useany = true,
+      },
+      usePlaceholders = true,
+      completeUnimported = true,
+      staticcheck = true,
+      directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+      semanticTokens = true,
     },
-    hints = {
-      assignVariableTypes = true,
-      compositeLiteralFields = true,
-      compositeLiteralTypes = true,
-      constantValues = true,
-      functionTypeParameters = true,
-      parameterNames = true,
-      rangeVariableTypes = true,
-    },
-    analyses = {
-      fieldalignment = true,
-      nilness = true,
-      unusedparams = true,
-      unusedwrite = true,
-      useany = true,
-    },
-    usePlaceholders = true,
-    completeUnimported = true,
-    staticcheck = true,
-    directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-    semanticTokens = true,
   },
   -- pyright = {},
   terraformls = {},
@@ -735,7 +736,7 @@ local servers = {
         includeInlayEnumMemberValueHints = true,
         includeInlayFunctionLikeReturnTypeHints = true,
         includeInlayFunctionParameterTypeHints = true,
-        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHints = "all",
         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
         includeInlayPropertyDeclarationTypeHints = true,
         includeInlayVariableTypeHints = true,
@@ -746,7 +747,7 @@ local servers = {
         includeInlayEnumMemberValueHints = true,
         includeInlayFunctionLikeReturnTypeHints = true,
         includeInlayFunctionParameterTypeHints = true,
-        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHints = "all",
         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
         includeInlayPropertyDeclarationTypeHints = true,
         includeInlayVariableTypeHints = true,
@@ -780,7 +781,7 @@ local servers = {
       telemetry = { enable = false },
       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
       -- diagnostics = { disable = { 'missing-fields' } },
-      hint = { enabled = true }
+      hint = { enabled = true },
     },
   },
 }
@@ -812,10 +813,10 @@ mason_lspconfig.setup_handlers({
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+local cmp = require("cmp")
+local luasnip = require("luasnip")
+require("luasnip.loaders.from_vscode").lazy_load()
+luasnip.config.setup({})
 
 -- local has_words_before = function()
 --   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
@@ -823,25 +824,25 @@ luasnip.config.setup {}
 --   return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 -- end
 
-cmp.setup {
+cmp.setup({
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
   },
   completion = {
-    completeopt = 'menu,menuone,noinsert',
+    completeopt = "menu,menuone,noinsert",
   },
-  mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<C-y>'] = cmp.mapping.confirm {
+  mapping = cmp.mapping.preset.insert({
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete({}),
+    ["<C-y>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
-    },
+    }),
     -- ['<Tab>'] = cmp.mapping(function(fallback)
     --   if cmp.visible() and has_words_before() then
     --     cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
@@ -860,13 +861,13 @@ cmp.setup {
     --     fallback()
     --   end
     -- end, { 'i', 's' }),
-  },
+  }),
   sources = {
     -- { name = "copilot",  group_index = 2 },
-    { name = 'nvim_lsp', group_index = 2 },
-    { name = 'luasnip',  group_index = 2 },
-    { name = "buffer",   group_index = 2 },
-    { name = "path",     group_index = 2 }
+    { name = "nvim_lsp", group_index = 2 },
+    { name = "luasnip", group_index = 2 },
+    { name = "buffer", group_index = 2 },
+    { name = "path", group_index = 2 },
   },
   -- sorting = {
   --   priority_weight = 2,
@@ -886,8 +887,10 @@ cmp.setup {
   --     cmp.config.compare.order,
   --   },
   -- },
-  config = function() require('config.snippets') end
-}
+  config = function()
+    require("config.snippets")
+  end,
+})
 require("core.keymaps")
 require("core.options")
 
