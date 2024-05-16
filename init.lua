@@ -97,8 +97,8 @@ require("lazy").setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  -- 'tpope/vim-fugitive',
-  -- 'tpope/vim-rhubarb',
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
   "tpope/vim-sleuth",
@@ -108,9 +108,6 @@ require("lazy").setup({
   {
     -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
-    opts = {
-      inlay_hints = { enabled = true },
-    },
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
       "williamboman/mason.nvim",
@@ -144,7 +141,7 @@ require("lazy").setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { "folke/which-key.nvim", opts = {} },
+  { "folke/which-key.nvim",  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     "lewis6991/gitsigns.nvim",
@@ -524,6 +521,7 @@ vim.defer_fn(function()
     ensure_installed = {
       "c",
       "cpp",
+      "diff",
       "go",
       "lua",
       "python",
@@ -689,6 +687,7 @@ require("mason-lspconfig").setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   -- clangd = {},
+  golangci_lint_ls = {},
   gopls = {
     gopls = {
       gofumpt = true,
@@ -865,9 +864,9 @@ cmp.setup({
   sources = {
     -- { name = "copilot",  group_index = 2 },
     { name = "nvim_lsp", group_index = 2 },
-    { name = "luasnip", group_index = 2 },
-    { name = "buffer", group_index = 2 },
-    { name = "path", group_index = 2 },
+    { name = "luasnip",  group_index = 2 },
+    { name = "buffer",   group_index = 2 },
+    { name = "path",     group_index = 2 },
   },
   -- sorting = {
   --   priority_weight = 2,
