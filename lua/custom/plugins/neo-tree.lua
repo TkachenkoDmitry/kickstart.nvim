@@ -11,7 +11,7 @@ return {
   },
   cmd = "Neotree",
   keys = {
-    { "\\", ":Neotree reveal<CR>", { desc = "NeoTree reveal" } },
+    { "\\", ":Neotree reveal<CR>", { desc = "NeoTree reveal" }, silent = true },
   },
   opts = {
     filesystem = {
@@ -24,5 +24,6 @@ return {
         },
       },
     },
+    use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
   },
 }
