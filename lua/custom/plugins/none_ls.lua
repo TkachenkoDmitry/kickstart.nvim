@@ -1,9 +1,10 @@
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 return {
 	{
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
+			"nvimtools/none-ls-extras.nvim",
 			"nvimtools/none-ls-extras.nvim",
 			"gbprod/none-ls-shellcheck.nvim",
 		},
@@ -12,7 +13,9 @@ return {
 			null_ls.setup({
 				sources = {
 					null_ls.builtins.formatting.stylua,
-					require("none-ls.diagnostics.eslint"),
+					null_ls.builtins.formatting.prettierd,
+					require("none-ls.diagnostics.eslint_d"),
+					null_ls.builtins.completion.spell,
 					null_ls.builtins.code_actions.gomodifytags,
 					null_ls.builtins.code_actions.impl,
 					null_ls.builtins.formatting.golines,
