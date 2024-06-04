@@ -97,8 +97,8 @@ require("lazy").setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
+  "tpope/vim-fugitive",
+  "tpope/vim-rhubarb",
 
   -- Detect tabstop and shiftwidth automatically
   "tpope/vim-sleuth",
@@ -687,6 +687,7 @@ require("mason-lspconfig").setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   -- clangd = {},
+  sqlls = {},
   golangci_lint_ls = {},
   gopls = {
     gopls = {
@@ -817,12 +818,14 @@ local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 luasnip.config.setup({})
 
--- local has_words_before = function()
---   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
---   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
---   return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
--- end
-
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+    return false
+  end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+-- local cmp_action = require('lsp-zero').cmp_action()
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -842,24 +845,24 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     }),
-    -- ['<Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() and has_words_before() then
-    --     cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-    --   elseif luasnip.expand_or_locally_jumpable() then
-    --     luasnip.expand_or_jump()
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
-    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_prev_item()
-    --   elseif luasnip.locally_jumpable(-1) then
-    --     luasnip.jump(-1)
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() and has_words_before() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   }),
   sources = {
     -- { name = "copilot",  group_index = 2 },
