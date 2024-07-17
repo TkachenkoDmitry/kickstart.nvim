@@ -231,6 +231,7 @@ return {
         },
         typos_lsp = {},
         html = { filetypes = { 'html', 'twig', 'hbs' } },
+        graphql = {},
         jsonls = {
           json = {
             schemas = require('schemastore').json.schemas(),
