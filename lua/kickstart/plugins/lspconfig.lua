@@ -16,7 +16,7 @@ return {
       { 'folke/neodev.nvim', opts = {} },
     },
     setup = {
-      tsserver = function()
+      ts_ls = function()
         -- disable tsserver
         return true
       end,
@@ -259,7 +259,7 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {
+        ts_ls = {
           enabled = false,
         },
         --
