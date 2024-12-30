@@ -27,11 +27,11 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         go = { 'goimports', 'gofumpt', 'golines' },
-        javascript = { { 'eslint_d', 'eslint' }, { 'prettierd', 'prettier' } },
-        javascriptreact = { { 'eslint_d', 'eslint' }, { 'prettierd', 'prettier' } },
-        typescript = { { 'eslint_d', 'eslint' }, { 'prettierd', 'prettier' } },
-        typescriptreact = { { 'eslint_d', 'eslint' }, { 'prettierd', 'prettier' } },
-        astro = { { 'prettierd', 'prettier' } },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        astro = { 'prettierd', 'prettier', stop_after_first = true },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
