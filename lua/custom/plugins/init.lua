@@ -18,7 +18,8 @@ return {
       input = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
-      scroll = { enabled = true },
+      scroll = { enabled = false },
+      lazygit = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
     },
@@ -28,6 +29,12 @@ return {
     event = 'VeryLazy',
     opts = {
       -- add any options here
+      routes = {
+        {
+          view = 'notify',
+          filter = { event = 'msg_showmode' },
+        },
+      },
     },
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries

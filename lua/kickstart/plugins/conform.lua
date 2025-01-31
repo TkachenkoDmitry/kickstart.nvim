@@ -32,6 +32,11 @@ return {
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         astro = { 'prettierd', 'prettier', stop_after_first = true },
+        hcl = { 'packer_fmt' },
+        terraform = { 'terraform_fmt' },
+        tf = { 'terraform_fmt' },
+        ['terraform-vars'] = { 'terraform_fmt' },
+
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

@@ -5,7 +5,6 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvimtools/none-ls-extras.nvim',
-      'nvimtools/none-ls-extras.nvim',
       'gbprod/none-ls-shellcheck.nvim',
     },
     config = function()
@@ -15,7 +14,8 @@ return {
         sources = {
           null_ls.builtins.formatting.stylua,
           null_ls.builtins.formatting.prettierd,
-          null_ls.builtins.diagnostics.eslint_d,
+          require 'none-ls.diagnostics.eslint_d',
+          require 'none-ls.code_actions.eslint_d',
           null_ls.builtins.completion.spell,
           null_ls.builtins.code_actions.gomodifytags,
           null_ls.builtins.code_actions.impl,
@@ -23,6 +23,9 @@ return {
           null_ls.builtins.formatting.goimports_reviser,
           null_ls.builtins.formatting.gofumpt,
           null_ls.builtins.formatting.sqlfmt,
+          null_ls.builtins.formatting.packer,
+          null_ls.builtins.formatting.terraform_fmt,
+          null_ls.builtins.diagnostics.terraform_validate,
         },
       }
     end,
