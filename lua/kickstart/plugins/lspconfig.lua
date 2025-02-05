@@ -202,7 +202,7 @@ return {
       servers = {
         -- clangd = {},
         terraformls = {},
-        eslint = {
+        eslint_d = {
           settings = {
             -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
             workingDirectories = { mode = 'auto' },
@@ -284,10 +284,13 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- ts_ls = {
-        --   enabled = false,
-        -- },
-        --
+        ts_ls = {
+          enabled = false,
+        },
+        dockerls = {},
+        angularls = {},
+        cssls = {},
+        svelte = {},
         vtsls = {
           -- explicitly add default filetypes, so that we can extend
           -- them in related extras
@@ -333,13 +336,13 @@ return {
               end,
               desc = 'Goto Source Definition',
             },
-            -- {
-            --   'gR',
-            --   function()
-            --     require('vtsls').commands.file_references(0)
-            --   end,
-            --   desc = 'File References',
-            -- },
+            {
+              'gR',
+              function()
+                require('vtsls').commands.file_references(0)
+              end,
+              desc = 'File References',
+            },
             {
               '<leader>co',
               function()
