@@ -18,11 +18,22 @@ return {
     'nvim-neotest/nvim-nio',
 
     -- Installs the debug adapters for you
-    'williamboman/mason.nvim',
+    {
+      'williamboman/mason.nvim',
+      opts = function(_, opts)
+        opts.ensure_installed = opts.ensure_installed or {}
+        table.insert(opts.ensure_installed, 'js-debug-adapter')
+      end,
+    },
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+
+    {
+      'theHamsta/nvim-dap-virtual-text',
+      opts = {},
+    },
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -49,7 +60,68 @@ return {
   config = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
+    if not dap.adapters['pwa-node'] then
+      -- local mason_registry = require 'mason-registry'
+      --
+      -- local js_debug = mason_registry.get_package 'js-debug-adapter' -- note that this will error if you provide a non-existent package name
+      -- js_debug:get_install_path() -- returns a string like "/home/user/.local/share/nvim/mason/packages/codelldb"
 
+      local path = '/Users/dmitrytkachenko/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js'
+      print(path)
+      require('dap').adapters['pwa-node'] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
+        executable = {
+          command = 'node',
+          -- 💀 Make sure to update this path to point to your installation
+          args = {
+            path,
+            '${port}',
+          },
+        },
+      }
+    end
+    if not dap.adapters['node'] then
+      dap.adapters['node'] = function(cb, config)
+        if config.type == 'node' then
+          config.type = 'pwa-node'
+        end
+        local nativeAdapter = dap.adapters['pwa-node']
+        if type(nativeAdapter) == 'function' then
+          nativeAdapter(cb, config)
+        else
+          cb(nativeAdapter)
+        end
+      end
+    end
+
+    local js_filetypes = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' }
+
+    local vscode = require 'dap.ext.vscode'
+    vscode.type_to_filetypes['node'] = js_filetypes
+    vscode.type_to_filetypes['pwa-node'] = js_filetypes
+
+    for _, language in ipairs(js_filetypes) do
+      if not dap.configurations[language] then
+        dap.configurations[language] = {
+          {
+            type = 'pwa-node',
+            request = 'launch',
+            name = 'Launch file',
+            program = '${file}',
+            cwd = '${workspaceFolder}',
+          },
+          {
+            type = 'pwa-node',
+            request = 'attach',
+            name = 'Attach',
+            processId = require('dap.utils').pick_process,
+            cwd = '${workspaceFolder}',
+          },
+        }
+      end
+    end
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
