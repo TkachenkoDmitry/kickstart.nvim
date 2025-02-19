@@ -23,7 +23,15 @@ return {
 
     vim.keymap.set('n', '<leader>/', builtin.lgrep_curbuf, { desc = '[/] Fuzzily search in current buffer' })
 
+    vim.keymap.set('n', '<leader>D', builtin.lsp_typedefs, { desc = 'Type [D]efinition' })
+
+    vim.keymap.set('n', '<leader>ds', builtin.lsp_document_symbols, { desc = '[D]ocument [S]ymbols' })
+
+    vim.keymap.set('n', '<leader>ws', builtin.lsp_workspace_symbols, { desc = '[W]orkspace [S]ymbols' })
+
     -- vim.keymap.set('n', '<leader>s/', builtin.grep_buffers, { desc = '[S]earch [/] in Open Files' })
+
+    vim.keymap.set('n', 'gI', builtin.lsp_implementations, { desc = '[G]oto [I]mplementation' })
 
     -- vim.keymap.set('n', '<leader>sn', function()
     --   builtin.find_files { cwd = vim.fn.stdpath 'config' }
