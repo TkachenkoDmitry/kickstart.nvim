@@ -287,7 +287,9 @@ return {
         ts_ls = {
           enabled = false,
         },
+        solidity_ls = {},
         dockerls = {},
+        docker_compose_language_service = {},
         angularls = {},
         cssls = {},
         svelte = {},
@@ -317,11 +319,13 @@ return {
               updateImportsOnFileMove = { enabled = 'always' },
               suggest = {
                 completeFunctionCalls = true,
+                completeJSDocs = true,
+                generateReturns = true,
               },
               inlayHints = {
                 enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = 'literals' },
+                functionLikeReturnTypes = { enabled = 'all' },
+                parameterNames = { enabled = 'all' },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },

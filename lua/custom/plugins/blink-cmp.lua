@@ -56,7 +56,14 @@ return {
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
       default = { 'lsp', 'path', 'snippets', 'buffer' },
-      cmdline = {},
+    },
+    cmdline = {
+      enabled = true,
+      keymap = {
+        ['<C-y>'] = { 'select_and_accept', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
+      },
     },
   },
   opts_extend = { 'sources.default' },
