@@ -13,7 +13,7 @@ return {
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -32,6 +32,8 @@ return {
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         astro = { 'prettierd', 'prettier', stop_after_first = true },
+        -- First fix all issues, then organize imports, then format
+        python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
         hcl = { 'packer_fmt' },
         terraform = { 'terraform_fmt' },
         tf = { 'terraform_fmt' },

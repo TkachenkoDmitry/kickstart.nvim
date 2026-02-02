@@ -12,15 +12,32 @@ return {
       flavour = 'mocha',
       integrations = {
         fzf = true,
-        -- cmp = true,
         noice = true,
         which_key = true,
-        indent_blankline = {
+        native_lsp = {
           enabled = true,
-          scope_color = '', -- catppuccin color (eg. `lavender`) Default: text
-          colored_indent_levels = false,
+          underlines = {
+            errors = { 'undercurl' },
+            hints = { 'undercurl' },
+            warnings = { 'undercurl' },
+            information = { 'undercurl' },
+          },
+          virtual_text = {
+            errors = { 'italic' },
+            hints = { 'italic' },
+            warnings = { 'italic' },
+            information = { 'italic' },
+            ok = { 'italic' },
+          },
+          inlay_hints = {
+            background = true,
+          },
         },
-        snacks = true,
+        snacks = {
+          enabled = true,
+
+          indent_scope_color = 'red',
+        },
         fidget = true,
         blink_cmp = true,
         markdown = true,

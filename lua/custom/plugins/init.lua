@@ -7,6 +7,13 @@ return {
     'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
+    keys = {
+      { '<leader>S', function() Snacks.scratch.select() end, desc = 'Select Scratch Buffer' },
+      { '<leader>.', function() Snacks.scratch() end, desc = 'Toggle Scratch Buffer' },
+      { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Delete Buffer' },
+      { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
+      { '\\', function() Snacks.explorer() end, desc = 'Explorer' },
+    },
     ---@type snacks.Config
     opts = {
       -- your configuration comes here
@@ -22,12 +29,48 @@ return {
       lazygit = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
+      picker = {
+        ui_select = false, -- Using fzf-lua for ui.select
+        hidden = true,
+        sources = {
+          explorer = {
+            cycle = true,
+            auto_close = true,
+            -- layout = { preview = 'main' },
+          },
+        },
+        layout = {
+          { preview = true },
+          layout = {
+            box = 'horizontal',
+            width = 0.8,
+            height = 0.8,
+            {
+              box = 'vertical',
+              border = 'rounded',
+              title = '{source} {live} {flags}',
+              title_pos = 'center',
+              { win = 'input', height = 1, border = 'bottom' },
+              { win = 'list', border = 'none' },
+            },
+            { win = 'preview', border = 'rounded', width = 0.7, title = '{preview}' },
+          },
+        },
+      },
+      explorer = { enabled = true },
     },
   },
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
     opts = {
+      lsp = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true,
+        },
+      },
       -- add any options here
       routes = {
         {
@@ -39,10 +82,7 @@ return {
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       'MunifTanjim/nui.nvim',
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      'rcarriga/nvim-notify',
+      -- NOTE: Using snacks.notifier instead of nvim-notify for notifications
     },
   },
 }

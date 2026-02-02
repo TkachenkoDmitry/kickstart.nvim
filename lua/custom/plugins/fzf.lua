@@ -4,7 +4,12 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
     -- calling `setup` is optional for customization
-    require('fzf-lua').setup {}
+    require('fzf-lua').setup {
+      -- Register as vim.ui.select backend
+      fzf_opts = { ['--layout'] = 'reverse' },
+    }
+    -- Register fzf-lua as the ui.select handler
+    require('fzf-lua').register_ui_select()
 
     local builtin = require 'fzf-lua'
     vim.keymap.set('n', '<leader>sh', builtin.helptags, { desc = '[S]earch [H]elp' })
@@ -32,6 +37,7 @@ return {
     -- vim.keymap.set('n', '<leader>s/', builtin.grep_buffers, { desc = '[S]earch [/] in Open Files' })
 
     vim.keymap.set('n', 'gI', builtin.lsp_implementations, { desc = '[G]oto [I]mplementation' })
+    vim.keymap.set('n', '<leader>ca', builtin.lsp_code_actions, { desc = '[C]ode [A]ction' })
 
     -- vim.keymap.set('n', '<leader>sn', function()
     --   builtin.find_files { cwd = vim.fn.stdpath 'config' }

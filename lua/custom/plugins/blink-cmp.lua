@@ -38,7 +38,7 @@ return {
       accept = {
         -- experimental auto-brackets support
         auto_brackets = {
-          enabled = true,
+          enabled = false,
         },
       },
       menu = {
@@ -65,6 +65,7 @@ return {
         ['<C-n>'] = { 'select_next', 'fallback' },
       },
     },
+    fuzzy = { implementation = 'rust' },
   },
   opts_extend = { 'sources.default' },
 }

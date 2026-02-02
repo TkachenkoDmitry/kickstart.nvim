@@ -3,25 +3,33 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', opts = {} }, -- NOTE: Must be loaded before dependants
-      'williamboman/mason-lspconfig.nvim',
+      { 'mason-org/mason.nvim', opts = {} }, -- NOTE: Must be loaded before dependants
+      { 'mason-org/mason-lspconfig.nvim', opts = {} },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua', -- only load on lua files
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+          },
+        },
+      },
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
       { 'saghen/blink.cmp' },
     },
     setup = {
-      ts_ls = function()
-        -- disable tsserver
-        return true
-      end,
-      vtsls = function(_, opts)
+      -- ts_ls = function()
+      --   -- disable tsserver
+      --   return true
+      -- end,
+      ts_ls = function(_, opts)
         -- copy typescript settings to javascript
         opts.settings.javascript = vim.tbl_deep_extend('force', {}, opts.settings.typescript, opts.settings.javascript or {})
       end,
@@ -91,38 +99,9 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-
-          -- Find references for the word under your cursor.
-          -- map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          -- map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          -- map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          -- map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          -- map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
@@ -139,6 +118,11 @@ return {
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client then
+            if client.name == 'ruff' then
+              -- Disable hover in favor of Pyright
+              client.server_capabilities.hoverProvider = false
+            end
+
             local existingServer = servers[client.name]
             if existingServer and existingServer.keys ~= nil then
               for _, key in ipairs(existingServer.keys) do
@@ -174,9 +158,9 @@ return {
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-            map('<leader>th', function()
+            map('<leader>uh', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
-            end, '[T]oggle Inlay [H]ints')
+            end, 'Toggle Inlay Hints')
           end
         end,
       })
@@ -201,16 +185,21 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       servers = {
         -- clangd = {},
-        terraformls = {},
-        eslint_d = {
+        harper_ls = {
           settings = {
-            -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
-            workingDirectories = { mode = 'auto' },
-            experimental = {
-              -- allows to use flat config format
-              useFlatConfig = true,
+            ['harper-ls'] = {
+              linters = {
+                SentenceCapitalization = false,
+                SpellCheck = false,
+              },
             },
           },
+        },
+        terraformls = {},
+        -- NOTE: eslint_d removed - it's a linter/formatter, not an LSP server
+        -- Use eslint LSP if you want native ESLint language server support
+        golangci_lint_ls = {
+          filetypes = { 'go', 'gomod' },
         },
         gopls = {
           keys = {
@@ -254,6 +243,26 @@ return {
             },
           },
         },
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              -- Using Ruff's import organizer
+              disableOrganizeImports = true,
+              analysis = { diagnosticMode = 'workspace' },
+              inlayHints = {
+                callArgumentNames = true,
+              },
+            },
+            python = {
+              analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting
+                ignore = { '*' },
+              },
+            },
+          },
+        },
+        ruff = {},
+        -- pyre = {},
         typos_lsp = {},
         html = { filetypes = { 'html', 'twig', 'hbs' } },
         graphql = {},
@@ -284,38 +293,48 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        ts_ls = {
-          enabled = false,
-        },
-        solidity_ls = {},
+        -- ts_ls = {
+        --   enabled = false,
+        -- },
+        -- solidity_ls = {},
+        solidity_ls_nomicfoundation = {},
         dockerls = {},
+        -- NOTE: cspell_ls removed - using cspell via none-ls instead
         docker_compose_language_service = {},
-        angularls = {},
+        -- angularls = {},
+        taplo = {},
         cssls = {},
         svelte = {},
-        vtsls = {
+        ts_ls = {
           -- explicitly add default filetypes, so that we can extend
           -- them in related extras
           filetypes = {
             'javascript',
             'javascriptreact',
-            'javascript.jsx',
+            -- 'javascript.jsx',
             'typescript',
             'typescriptreact',
-            'typescript.tsx',
+            -- 'typescript.tsx',
+          },
+          init_options = {
+            maxTsServerMemory = 8192, -- Increase memory limit
           },
           settings = {
-            complete_function_calls = true,
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = {
-                completion = {
-                  enableServerSideFuzzyMatch = true,
-                },
-              },
+            completions = {
+              completeFunctionCalls = true,
             },
+            ['js/ts'] = { implicitProjectConfig = { checkJs = true } },
             typescript = {
+              implicitProjectConfiguration = {
+                checkJs = true,
+              },
+              preferences = {
+                includePackageJsonAutoImports = 'off', -- Performance optimization
+                includeCompletionsForModuleExports = true,
+                includeCompletionsForImportStatements = true,
+                importModuleSpecifier = 'project-relative',
+                importModuleSpecifierEnding = 'minimal',
+              },
               updateImportsOnFileMove = { enabled = 'always' },
               suggest = {
                 completeFunctionCalls = true,
@@ -323,62 +342,87 @@ return {
                 generateReturns = true,
               },
               inlayHints = {
-                enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = 'all' },
-                parameterNames = { enabled = 'all' },
+                enumMemberValues = { enabled = true },
+                parameterNames = { enabled = 'all', suppressWhenArgumentMatchesName = true },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
+                variableTypes = { enabled = false, suppressWhenTypeMatchesName = true },
+              },
+            },
+            javascript = {
+              inlayHints = {
+                functionLikeReturnTypes = { enabled = 'all' },
+                enumMemberValues = { enabled = true },
+                parameterNames = { enabled = 'all', suppressWhenArgumentMatchesName = true },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false, suppressWhenTypeMatchesName = true },
+              },
+              preferences = {
+                importModuleSpecifier = 'project-relative',
               },
             },
           },
+          capabilities = (function()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities.workspace.didChangeWatchedFiles = false -- Disable file watching for performance
+            return capabilities
+          end)(),
           keys = {
-            {
-              'gD',
-              function()
-                require('vtsls').commands.goto_source_definition(0)
-              end,
-              desc = 'Goto Source Definition',
-            },
-            {
-              'gR',
-              function()
-                require('vtsls').commands.file_references(0)
-              end,
-              desc = 'File References',
-            },
+            -- gd/gr handled by fzf-lua globally
             {
               '<leader>co',
               function()
-                require('vtsls').commands.organize_imports(0)
+                vim.lsp.buf.code_action {
+                  apply = true,
+                  context = {
+                    only = { 'source.organizeImports' },
+                  },
+                }
               end,
               desc = 'Organize Imports',
             },
             {
               '<leader>cM',
               function()
-                require('vtsls').commands.add_missing_imports(0)
+                vim.lsp.buf.code_action {
+                  apply = true,
+                  context = {
+                    only = { 'source.addMissingImports' },
+                  },
+                }
               end,
               desc = 'Add missing imports',
             },
             {
               '<leader>cu',
               function()
-                require('vtsls').commands.remove_unused_imports(0)
+                vim.lsp.buf.code_action {
+                  apply = true,
+                  context = {
+                    only = { 'source.removeUnusedImports' },
+                  },
+                }
               end,
               desc = 'Remove unused imports',
             },
             {
               '<leader>cD',
               function()
-                require('vtsls').commands.fix_all(0)
+                vim.lsp.buf.code_action {
+                  apply = true,
+                  context = {
+                    only = { 'source.fixAll' },
+                  },
+                }
               end,
               desc = 'Fix all diagnostics',
             },
             {
               '<leader>cV',
               function()
-                require('vtsls').commands.select_ts_version(0)
+                vim.cmd 'TypescriptSelectVersion'
               end,
               desc = 'Select TS workspace version',
             },
@@ -416,19 +460,9 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      local lspconfig = require 'lspconfig'
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            lspconfig[server_name].setup(server)
-          end,
-        },
-      }
+      for server_name, config in pairs(servers) do
+        vim.lsp.config(server_name, config)
+      end
     end,
   },
 }
