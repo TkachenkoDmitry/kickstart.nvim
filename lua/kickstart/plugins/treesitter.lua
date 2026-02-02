@@ -4,6 +4,35 @@ return {
     build = ':TSUpdate',
     lazy = false,
     config = function()
+      -- Helper to register Cypher parser (needed both now and after TSUpdate reloads parsers)
+      local function register_cypher()
+        require('nvim-treesitter.parsers').cypher = {
+          install_info = {
+            url = 'https://github.com/taekwombo/tree-sitter-cypher',
+            files = { 'src/parser.c' },
+            branch = 'master',
+            queries = 'queries',
+          },
+        }
+      end
+
+      -- Register now
+      register_cypher()
+
+      -- Re-register after TSUpdate (install/update calls reload_parsers which wipes custom parsers)
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TSUpdate',
+        callback = register_cypher,
+      })
+
+      -- Register filetype for .cypher and .cql files
+      vim.filetype.add {
+        extension = {
+          cypher = 'cypher',
+          cql = 'cypher',
+        },
+      }
+
       -- Install parsers (new API)
       local parsers = {
         'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline',
@@ -12,6 +41,12 @@ return {
         'typescript', 'tsx', 'javascript', 'css', 'scss', 'json',
         'python', 'yaml', 'toml', 'dockerfile', 'graphql', 'svelte',
         'terraform', 'hcl', 'ruby', 'rust',
+
+        'regex',  -- regex literals in JS/TS
+        'sql',    -- SQL in tagged template literals
+        'jsdoc',  -- JSDoc comments in JS/TS
+        'query',  -- treesitter .scm query files themselves
+        'cypher', -- Neo4j Cypher query language
       }
       require('nvim-treesitter').install(parsers)
 
