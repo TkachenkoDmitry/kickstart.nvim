@@ -20,9 +20,6 @@ vim.opt.showmode = false
 --  See `:help 'clipboard'`
 vim.opt.clipboard = 'unnamedplus'
 
--- Enable break indent
-vim.opt.breakindent = true
-
 -- Save undo history
 vim.opt.undofile = true
 
@@ -59,8 +56,32 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-vim.opt.guicursor =
-  'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175'
+-- Disable line wrapping globally (markview tables need this)
+vim.opt.wrap = false
+
+-- Toggle wrap keymap
+vim.keymap.set('n', '<leader>uw', function()
+  vim.opt.wrap = not vim.opt.wrap:get()
+  vim.notify('wrap ' .. (vim.opt.wrap:get() and 'ON' or 'OFF'))
+end, { desc = 'Toggle [W]rap' })
+
+-- Enable 24-bit colors (required for modern themes)
+vim.opt.termguicolors = true
+
+-- Conceal markdown syntax for markview.nvim rendering
+vim.opt.conceallevel = 2
+vim.opt.concealcursor = 'nc'
+
+-- Remove 'o' from formatoptions to prevent auto-inserting comment leader on new lines
+vim.opt.formatoptions:remove('o')
+
+-- Allow cursor to move across lines with h/l/<Left>/<Right>
+vim.opt.whichwrap = 'h,l,<,>,[,]'
+
+-- Ask for confirmation when closing unsaved buffers
+vim.opt.confirm = true
+
+vim.opt.guicursor = 'n-v-c:block,i-ci-ve:ver25'
 
 vim.diagnostic.config {
   virtual_text = {

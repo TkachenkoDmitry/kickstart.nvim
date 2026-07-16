@@ -8,11 +8,41 @@ return {
     priority = 1000,
     lazy = false,
     keys = {
-      { '<leader>S', function() Snacks.scratch.select() end, desc = 'Select Scratch Buffer' },
-      { '<leader>.', function() Snacks.scratch() end, desc = 'Toggle Scratch Buffer' },
-      { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Delete Buffer' },
-      { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
-      { '\\', function() Snacks.explorer() end, desc = 'Explorer' },
+      {
+        '<leader>S',
+        function()
+          Snacks.scratch.select()
+        end,
+        desc = 'Select Scratch Buffer',
+      },
+      {
+        '<leader>.',
+        function()
+          Snacks.scratch()
+        end,
+        desc = 'Toggle Scratch Buffer',
+      },
+      {
+        '<leader>bd',
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = 'Delete Buffer',
+      },
+      {
+        '<leader>gg',
+        function()
+          Snacks.lazygit()
+        end,
+        desc = 'Lazygit',
+      },
+      {
+        '\\',
+        function()
+          Snacks.explorer()
+        end,
+        desc = 'Explorer',
+      },
     },
     ---@type snacks.Config
     opts = {
@@ -26,6 +56,7 @@ return {
       notifier = { enabled = true },
       quickfile = { enabled = true },
       scroll = { enabled = false },
+      image = { enabled = true, explorer = true },
       lazygit = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
@@ -68,10 +99,18 @@ return {
         override = {
           ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
           ['vim.lsp.util.stylize_markdown'] = true,
-          ['cmp.entry.get_documentation'] = true,
+        },
+        hover = { enabled = true },
+        signature = { enabled = true },
+      },
+      views = {
+        hover = {
+          -- border = { style = 'rounded' },
+          border = { style = 'rounded', padding = { 0, 1 } },
+          size = { max_width = 80, max_height = 20 },
+          position = { row = 2, col = 2 },
         },
       },
-      -- add any options here
       routes = {
         {
           view = 'notify',
@@ -80,9 +119,7 @@ return {
       },
     },
     dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       'MunifTanjim/nui.nvim',
-      -- NOTE: Using snacks.notifier instead of nvim-notify for notifications
     },
   },
 }

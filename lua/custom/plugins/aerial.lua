@@ -21,7 +21,13 @@ return {
     },
   },
   keys = {
-    { '<leader>cs', function() require('aerial').fzf_lua_picker() end, desc = 'Aerial (Symbols)' },
+    {
+      '<leader>cy',
+      function()
+        require('aerial').fzf_lua_picker()
+      end,
+      desc = 'Aerial (Symbols)',
+    },
     { '<leader>cS', '<cmd>AerialToggle<cr>', desc = 'Aerial Toggle' },
     { '[s', '<cmd>AerialPrev<cr>', desc = 'Previous symbol' },
     { ']s', '<cmd>AerialNext<cr>', desc = 'Next symbol' },

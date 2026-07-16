@@ -24,36 +24,6 @@ return {
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       { 'saghen/blink.cmp' },
     },
-    setup = {
-      -- ts_ls = function()
-      --   -- disable tsserver
-      --   return true
-      -- end,
-      ts_ls = function(_, opts)
-        -- copy typescript settings to javascript
-        opts.settings.javascript = vim.tbl_deep_extend('force', {}, opts.settings.typescript, opts.settings.javascript or {})
-      end,
-      gopls = function(_, opts)
-        -- workaround for gopls not supporting semanticTokensProvider
-        -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-        vim.lsp.on_attach(function(client, _)
-          if client.name == 'gopls' then
-            if not client.server_capabilities.semanticTokensProvider then
-              local semantic = client.config.capabilities.textDocument.semanticTokens
-              client.server_capabilities.semanticTokensProvider = {
-                full = true,
-                legend = {
-                  tokenTypes = semantic.tokenTypes,
-                  tokenModifiers = semantic.tokenModifiers,
-                },
-                range = true,
-              }
-            end
-          end
-        end)
-        -- end workaround
-      end,
-    },
     config = function()
       -- Brief aside: **What is LSP?**
       --
@@ -274,15 +244,16 @@ return {
             },
             validate = { enable = true },
           },
-          yaml = {
-            schemaStore = {
-              -- You must disable built-in schemaStore support if you want to use
-              -- this plugin and its advanced options like `ignore`.
-              enable = false,
-              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-              url = '',
+        },
+        yamlls = {
+          settings = {
+            yaml = {
+              schemaStore = {
+                enable = false,
+                url = '',
+              },
+              schemas = require('schemastore').yaml.schemas(),
             },
-            schemas = require('schemastore').yaml.schemas(),
           },
         },
         -- pyright = {},
@@ -450,7 +421,6 @@ return {
       --    :Mason
       --
       --  You can press `g?` for help in this menu.
-      require('mason').setup()
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.

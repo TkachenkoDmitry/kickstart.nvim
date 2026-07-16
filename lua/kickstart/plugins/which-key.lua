@@ -33,6 +33,7 @@ return {
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]est' },
         { '<leader>u', group = '[U]I Toggle' },
+        { '<leader>uw', desc = 'Toggle [W]rap' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>x', group = 'Trouble' },
         { '<leader>;', group = 'Harpoon' },

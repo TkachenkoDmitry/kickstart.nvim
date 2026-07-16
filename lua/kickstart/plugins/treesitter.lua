@@ -55,9 +55,9 @@ return {
         callback = function(args)
           if pcall(vim.treesitter.start, args.buf) then
             -- Folding
-            vim.wo[0][0].foldmethod = 'expr'
-            vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-            vim.wo[0][0].foldlevel = 99
+            vim.opt_local.foldmethod = 'expr'
+            vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            vim.opt_local.foldlevel = 99
             -- Indentation
             vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end

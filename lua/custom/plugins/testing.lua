@@ -25,7 +25,10 @@ return {
     require('neotest').setup {
       adapters = {
         require 'neotest-vitest',
-        require 'neotest-python',
+        require('neotest-python') {
+          args = { '-s', '-v' },
+          dap = { justMyCode = false },
+        },
         require 'neotest-jest' {
           jestCommand = 'npm test --',
           jestConfigFile = 'custom.jest.config.ts',

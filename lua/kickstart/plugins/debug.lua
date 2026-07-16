@@ -10,7 +10,7 @@ return {
     'nvim-neotest/nvim-nio', -- Required for nvim-dap-ui v4+
 
     -- Mason integration
-    'williamboman/mason.nvim',
+    'mason-org/mason.nvim',
     {
       'jay-babu/mason-nvim-dap.nvim',
       opts = {
@@ -85,6 +85,17 @@ return {
     local js_filetypes = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' }
 
     local function get_js_debug_adapter_path()
+      local ok, mason_registry = pcall(require, 'mason-registry')
+      if ok then
+        local pkg = mason_registry.get_package('js-debug-adapter')
+        if pkg:is_installed() then
+          local path = pkg:get_install_path() .. '/js-debug/src/dapDebugServer.js'
+          if vim.fn.filereadable(path) == 1 then
+            return path
+          end
+        end
+      end
+      -- Fallback to hardcoded path
       local path = vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js'
       if vim.fn.filereadable(path) == 1 then
         return path
